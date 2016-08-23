@@ -19,7 +19,7 @@ widgets:
 - douban
 - rss
 - weibo
-- github-card
+##- github-card
   ## provide eight widgets:github-card,category,tag,rss,archive,tagcloud,links,weibo
 
 

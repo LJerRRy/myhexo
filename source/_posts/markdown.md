@@ -9,4 +9,4 @@ categories: hexo入门
 
 ### The title
 
-![](http://i4.buimg.com/572678/9e4bf56dd5b667a9.jpg)
+![](http://ocdga6wo9.bkt.clouddn.com/san.jpg)
