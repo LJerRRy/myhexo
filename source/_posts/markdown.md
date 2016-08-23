@@ -1,6 +1,6 @@
 ---
 title: markdown
-date: 2016-08-23 00:48:19
+date: 2016-08-22 00:48:19
 tags: markdown
 categories: hexo入门
 ---
@@ -9,4 +9,4 @@ categories: hexo入门
 
 ### The title
 
-![](img/san.jpg)
+![](http://i4.buimg.com/572678/9e4bf56dd5b667a9.jpg)
