@@ -6,11 +6,11 @@ git commit -m "first commit"<br>
 git remote add origin https://github.com/LJerRRy/myhexo.git<br>
 git push -u origin master<br>
 
-everytime you should excute below codes:
-cd myhexo
-npm install hexo
-npm install hexo-server --save
-npm install hexo-renderer-ejs --save
-npm install hexo-renderer-stylus --save
-npm install hexo-renderer-marked --save
-npm install
+everytime you should excute below codes:<br>
+cd myhexo<br>
+npm install hexo<br>
+npm install hexo-server --save<br>
+npm install hexo-renderer-ejs --save<br>
+npm install hexo-renderer-stylus --save<br>
+npm install hexo-renderer-marked --save<br>
+npm install<br>
