@@ -2,7 +2,7 @@
 title: git learning day 1
 date: 2016-08-23 19:00:22
 tags: git
-categories: ProgramingLanguage
+categories: 学习笔记
 ---
 ## git起步
 ### 配置
