@@ -1,11 +1,33 @@
 ---
-title: Median of Two Sorted Arrays
+title: Leetcode-4
 categories: 算法分析
 date: 2016-08-28 23:00:32
 tags: [Leetcode,algorithm]
 ---
 
 [Leetcode](https://leetcode.com/problems/median-of-two-sorted-arrays/)上算法题四，求两个已排序数组的中位数。
+
+## 问题描述
+
+There are two sorted arrays nums1 and nums2 of size m and n respectively.
+
+Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+**Example 1:**
+```
+nums1 = [1, 3]
+nums2 = [2]
+
+The median is 2.0
+```
+
+**Example 2:**
+```
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+The median is (2 + 3)/2 = 2.5
+```
 
 ## 解题思路
 * **方法一**  将两个数组合并为一个有序数组a，根据两个数组长度的总长度n分类讨论：
