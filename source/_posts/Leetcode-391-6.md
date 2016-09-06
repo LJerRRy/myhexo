@@ -1,5 +1,5 @@
 ---
-title: Leetcode-389-390
+title: Leetcode-6-391
 date: 2016-09-04 00:12:01
 tags: [Leetcode,algorithm]
 categories: 算法分析
@@ -108,11 +108,10 @@ Return false. Because there is a gap between the two rectangular regions.
 
 ## 解题思路
 
+n个轴对称矩形(其中n>0)，判断是否能围成一个矩形,不能有重叠且恰好围成一个矩形区域。每个矩形用左下顶点和右上顶点来表示，如矩形[1,1,2,3]，表示该矩形左下顶点坐标为（1,1），右下顶点坐标为（2,3）。
 
-
-* **方法一**  用数组，两个数组，一个用来保存未被删除的。但是该方法容易内存超过限制，不能通过leetcode。
-* **方法二** 根据题设要求的数字移除过程，可以发现每执行完一趟数字移除操作，列表中剩余相邻数字之间的差都会加倍。（参考别人的）
-
+* **方法一**  顶点检查法，[参考地址](https://discuss.leetcode.com/topic/55923/o-n-solution-by-counting-corners-with-detailed-explaination/2)
+* **方法二**  扫描线法，[参考地址](https://discuss.leetcode.com/topic/55944/o-n-log-n-sweep-line-solution)
 ## 代码
 
 方法一
@@ -148,22 +147,67 @@ Return false. Because there is a gap between the two rectangular regions.
 
 方法二
 
-参考了[书影](http://bookshadow.com/weblog/2016/08/28/leetcode-elimination-game/)
 
 ```java
-public static int lastRemaining3(int n) {
-    int a=1,p=1,cnt=0;
-    while (n>1){
-        n/=2;
-        cnt++;//执行的cnt趟
-        p*=2;//数字间的间隔
-        if(cnt%2==1){
-            a += p/2 + p*(n-1);
-        }else {
-            a -= p/2 + p*(n-1);
-        }
-    }
-    return a;
+//定义一个扫描事件
+public class Event implements Comparable<Event> {
+	int time;
+	int[] rect;
+
+	public Event(int time, int[] rect) {
+		this.time = time;
+		this.rect = rect;
+	}
+	
+	public int compareTo(Event that) {
+		if (this.time != that.time) return this.time - that.time;
+		else return this.rect[0] - that.rect[0];
+	}
+}
+
+public boolean isRectangleCover(int[][] rectangles) {
+	PriorityQueue<Event> pq = new PriorityQueue<Event> ();
+        // border of y-intervals
+	int[] border= {Integer.MAX_VALUE, Integer.MIN_VALUE};
+	for (int[] rect : rectangles) {
+		Event e1 = new Event(rect[0], rect);
+		Event e2 = new Event(rect[2], rect);
+		pq.add(e1);
+		pq.add(e2);
+		if (rect[1] < border[0]) border[0] = rect[1];
+		if (rect[3] > border[1]) border[1] = rect[3];
+	}
+	TreeSet<int[]> set = new TreeSet<int[]> (new Comparator<int[]> () {
+		@Override
+                // if two y-intervals intersects, return 0
+		public int compare (int[] rect1, int[] rect2) {
+			if (rect1[3] <= rect2[1]) return -1;
+			else if (rect2[3] <= rect1[1]) return 1;
+			else return 0;
+		}
+	});
+	int yRange = 0;
+	while (!pq.isEmpty()) {
+		int time = pq.peek().time;
+		while (!pq.isEmpty() && pq.peek().time == time) {
+			Event e = pq.poll();
+			int[] rect = e.rect;
+			if (time == rect[2]) {
+				set.remove(rect);
+				yRange -= rect[3] - rect[1];
+			} else {
+				if (!set.add(rect)) return false;
+				yRange += rect[3] - rect[1];
+			}
+		}
+                // check intervals' range
+		if (!pq.isEmpty() && yRange != border[1] - border[0]) {
+                        return false;
+			//if (set.isEmpty()) return false;
+			//if (yRange != border[1] - border[0]) return false;
+		}
+	}
+	return true;
 }
 ```
 
