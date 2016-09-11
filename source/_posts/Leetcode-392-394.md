@@ -5,7 +5,7 @@ tags: [Leetcode,algorithm]
 categories: 算法分析
 ---
 
-[Leetcoode](https://leetcode.com/problemset/algorithms/)上的第392题与第394题
+[Leetcoode](https://leetcode.com/problemset/algorithms/)上的第392题到第394题
 
 # 题目392 Is Subsequence
 ## 问题描述
@@ -90,8 +90,8 @@ public boolean isSubsequence(String s, String t) {
 
 A character in UTF8 can be from 1 to 4 bytes long, subjected to the following rules:
 
-    1. For 1-byte character, the first bit is a 0, followed by its unicode code.
-    2. For n-bytes character, the first n-bits are all one's, the n+1 bit is 0, followed by n-1 bytes with most significant 2 bits being 10.
+1. For 1-byte character, the first bit is a 0, followed by its unicode code.
+2. For n-bytes character, the first n-bits are all one's, the n+1 bit is 0, followed by n-1 bytes with most significant 2 bits being 10.
 This is how the UTF-8 encoding would work:
 
 ```
@@ -172,4 +172,111 @@ But the second continuation byte does not start with 10, so it is invalid.
         }
         return true;
     }
+```
+
+# 题目394 Decode String
+## 问题描述
+
+Given an encoded string, return it's decoded string.
+
+The encoding rule is: `k[encoded_string]`, where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like `3a or 2[4]`.
+**Example:**
+
+```
+s = "3[a]2[bc]", return "aaabcbc".
+s = "3[a2[c]]", return "accaccacc".//注意可以嵌套的，我当时做的时候没注意嵌套，然后做错了
+s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+```
+
+
+
+## 解题思路
+
+题目大意：将字符串解码，返回解码后的字符串。
+
+
+
+* **方法一** 用栈来存储待解码字符串，每当遇到`]`进行一次解码，然后重新将其压入栈中，直到遍历完整个编码字符串。
+* **方法二** 用递归来解决。参考的discuss。
+
+## 代码
+
+方法一
+
+```java
+public class Solution {
+    public String decodeString(String s) {
+       Stack<Character> str = new Stack<>();//栈用来存放字符
+        for(char c:s.toCharArray()){
+            if(c==']'){//当前c为]则要做出一次解码
+                String repeat = "";
+                while(str.peek()!='['){
+                    repeat=str.peek()+repeat;//注意这里一定是str.peek()+repeat，不能写反,也不能用+=
+                    str.pop();
+                }
+                str.pop();
+                String num = "";//重复的数量，由于重复的值可能是多位数
+                while(!str.isEmpty()){
+                    char n = str.peek();
+                    if(!Character.isDigit(n))break;
+                    else {
+                        num=n+num;//注意这里一定是n+num，不能写反，也不能用+=
+                        str.pop();
+                    }
+                }
+                int re;
+                if(num=="")re=1;
+                else{
+                    re = Integer.parseInt(num);
+                }
+                while(re-->0){
+                    for(char ch:repeat.toCharArray())
+                        str.push(ch);
+                }
+            }else{
+                str.push(c);
+            }
+        }
+        String aimS="";
+        while(!str.isEmpty()){
+            aimS=str.pop()+aimS;//注意这里一定是str.pop()+aimS，不能写反，也不能用+=
+        }
+        return aimS;
+    }
+}
+```
+
+方法二
+
+```java
+public class Solution {
+    private int idx;
+    public  String decodeString3(String s) {
+        idx = 0;
+        return helper(s);
+    }
+    public  String helper(String s) {
+        StringBuffer ans = new StringBuffer();
+        for(int k=0;idx < s.length();++idx){
+            char ch = s.charAt(idx);
+            if(ch == '['){
+                idx++;
+                String str = helper(s);
+                while (k > 0) {
+                    ans.append(str);
+                    --k;
+                }
+            }else if (ch == ']') {
+                break;
+            } else if (Character.isDigit(ch)) {
+                k = k * 10 + ch - '0';
+            } else ans.append(ch);
+        }
+        return ans.toString();
+    }
+}
 ```
